@@ -2,10 +2,11 @@ import * as Three from 'three';
 import { color } from '../config/index.js'
 
 export class SurroundLine {
-    constructor(child, scene, height) {
+    constructor(child, scene, height, time) {
         this.child = child;
         this.scene = scene;
         this.height = height;
+        this.time = time;
         this.createMesh();
         this.createLine();
     }
@@ -22,22 +23,56 @@ export class SurroundLine {
         // 创建线条 api
         // const material = new Three.LineBasicMaterial({color: color.buildWrapBoxLine});
 
+        const { max, min } = this.child.geometry.boundingBox;
         // 着色器自定义的材质
         const material = new Three.ShaderMaterial({
             uniforms: {
+                // 一个不断变化的值 u_height u_time 
+                u_time: this.time,
+                // 扫描的位置
+                u_max: {
+                    value: max
+                },
+                u_min: {
+                    value: min
+                },
+                live_color: {
+                    value: new Three.Color(color.liveColor)
+                },
                 line_color: {
                     value: new Three.Color(color.buildWrapBoxLine)
                 }
             },
             vertexShader: `
-                void main() {
+                uniform float u_time;
+                uniform vec3 live_color;
+                uniform vec3 line_color;
+                uniform vec3 u_max;
+                uniform vec3 u_min;
+
+                varying vec3 v_color;
+
+                void main() { 
+                    float new_time = mod(u_time * 0.1, 1.0);
+                    // 扫描的位置
+                    float rangY = mix(u_min.y, u_max.y, new_time); 
+                    if(rangY < position.y && rangY > position.y - 200.0){
+                        float f_index = 1.0 - sin((position.y - rangY) / 200.0);
+                        float r = mix(live_color.r, line_color.r, f_index);
+                        float g = mix(live_color.g, line_color.g, f_index);
+                        float b = mix(live_color.b, line_color.b, f_index);
+
+                        v_color = vec3(r,g,b);
+                    } else {
+                        v_color = line_color;
+                    }
                     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 }
             `,
             fragmentShader: `
-                uniform vec3 line_color;
+                varying vec3 v_color;
                 void main() {
-                    gl_FragColor = vec4(line_color, 1.0);
+                    gl_FragColor = vec4(v_color, 1.0);
                 }
             `
         })

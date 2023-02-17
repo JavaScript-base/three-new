@@ -43,10 +43,15 @@ export const initCity = () => {
 
     renderer.setClearColor(new Three.Color(0x000000), 1)
 
+    const axesHelper = new Three.AxesHelper( 1000 );
+    scene.add( axesHelper );
+
     const city = new City(scene, camera);
 
+    const clock = new Three.Clock();
+
     const start = () => {
-        city.start();
+        city.start(clock.getDelta());
         orbitControls.update();
         renderer.render(scene, camera);
         requestAnimationFrame(start);

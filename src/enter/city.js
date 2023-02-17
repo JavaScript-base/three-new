@@ -13,6 +13,9 @@ export class City {
         this.height = {
             value: 5
         };
+        this.time = {
+            value: 0
+        };
         this.loadCity();
     }
 
@@ -22,7 +25,7 @@ export class City {
             object.traverse((child) => {
                 if(child.isMesh) {
                     // const meterial1= new Three.MeshLambertMaterial({color: '#1b3045'})
-                    new SurroundLine(child, this.scene, this.height);
+                    new SurroundLine(child, this.scene, this.height, this.time);
                 }
             })
             // this.scene.add(object)
@@ -98,12 +101,15 @@ export class City {
         }
     }
 
-    start() {
+    start(delta) {
         if(this.tweenRotation && this.tweenPosition) {
             this.tweenPosition.update();
             this.tweenRotation.update();
         }
         this.height.value += 0.4;
+
+        this.time.value += delta;
+
         if(this.height.value > 160) {
             this.height.value = 5;
         }
