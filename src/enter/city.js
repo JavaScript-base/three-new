@@ -3,6 +3,7 @@ import * as Three from 'three';
 import { SurroundLine } from '../effect/surroundLine.js'
 import { Background } from '../effect/background.js'
 import { Tween } from '@tweenjs/tween.js';
+import { Radar } from '../effect/index';
 
 export class City {
     constructor(scene, camera) {
@@ -36,6 +37,8 @@ export class City {
     // 模型上的效果
     initEffect() {
         new Background(this.scene);
+
+        new Radar(this.scene, this.time);
 
         // 添加点击选择
         this.addClick()
