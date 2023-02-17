@@ -64,7 +64,6 @@ export class Radar {
                 }
             `
         })
-
         const mesh = new Three.Mesh(geometry, meterial);
         mesh.position.set(300, 0, 0);
         mesh.rotateX(-Math.PI/2)

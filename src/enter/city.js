@@ -4,6 +4,7 @@ import { SurroundLine } from '../effect/surroundLine.js'
 import { Background } from '../effect/background.js'
 import { Tween } from '@tweenjs/tween.js';
 import { Radar } from '../effect/index';
+import { Wall } from "../effect/wall.js";
 
 export class City {
     constructor(scene, camera) {
@@ -39,6 +40,8 @@ export class City {
         new Background(this.scene);
 
         new Radar(this.scene, this.time);
+
+        new Wall(this.scene, this.time);
 
         // 添加点击选择
         this.addClick()
