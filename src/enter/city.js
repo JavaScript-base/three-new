@@ -6,6 +6,7 @@ import { Tween } from '@tweenjs/tween.js';
 import { Radar } from '../effect/index';
 import { Wall } from "../effect/wall.js";
 import { Circle } from '../effect/circle';
+import { Ball } from '../effect/ball';
 
 export class City {
     constructor(scene, camera) {
@@ -43,6 +44,8 @@ export class City {
         new Radar(this.scene, this.time);
 
         new Wall(this.scene, this.time);
+
+        new Ball(this.scene, this.time);
 
         new Circle(this.scene, this.time);
 
