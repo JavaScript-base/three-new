@@ -10,6 +10,9 @@ export class City {
         this.camera = camera;
         this.tweenRotation = null;
         this.tweenPosition = null;
+        this.height = {
+            value: 5
+        };
         this.loadCity();
     }
 
@@ -19,7 +22,7 @@ export class City {
             object.traverse((child) => {
                 if(child.isMesh) {
                     // const meterial1= new Three.MeshLambertMaterial({color: '#1b3045'})
-                    new SurroundLine(child, this.scene);
+                    new SurroundLine(child, this.scene, this.height);
                 }
             })
             // this.scene.add(object)
@@ -99,6 +102,10 @@ export class City {
         if(this.tweenRotation && this.tweenPosition) {
             this.tweenPosition.update();
             this.tweenRotation.update();
+        }
+        this.height.value += 0.4;
+        if(this.height.value > 160) {
+            this.height.value = 5;
         }
     }
 }
