@@ -10,6 +10,8 @@ import { Ball } from '../effect/ball';
 import { Cone } from '../effect/cone';
 import { Fly } from '../effect/fly';
 import { Road } from '../effect/road';
+import { Rain } from '../effect/rain';
+import { Snow } from '../effect/snow';
 
 export class City {
     constructor(scene, camera) {
@@ -25,6 +27,8 @@ export class City {
         this.cone = null;
         this.fly = null;
         this.road = null;
+        this.rain = null;
+        this.snow = null;
 
         this.beattime = {
             value: []
@@ -63,11 +67,11 @@ export class City {
             this.initEffectCone()
             this.initEffectFly()
             this.initEffectRoad()
+            // this.initEffectRain()
+            // this.initEffectSnow()
             this.addClick();
         })
     }
-
-
 
     // 模型上的效果
     initEffectBackground(url) {
@@ -93,6 +97,12 @@ export class City {
     }
     initEffectRoad() {
         this.road = new Road(this.scene, this.time);
+    }
+    initEffectRain() {
+        this.rain = new Rain(this.scene);
+    }
+    initEffectSnow() {
+        this.snow = new Snow(this.scene);
     }
 
     addClick() {
@@ -162,6 +172,9 @@ export class City {
             this.tweenRotation.update();
         }
         this.height.value += 0.4;
+
+        this.rain && this.rain.animation();
+        this.snow && this.snow.animation();
 
         // let STEP = 50;
         // const averageFrequencyData = [];

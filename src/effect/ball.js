@@ -80,7 +80,6 @@ export class Ball {
 
     remove() {
         if(this.sence && this.mesh) {
-            debugger;
             this.sence.remove(this.mesh);
         }
     }

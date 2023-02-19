@@ -5,16 +5,19 @@ import TodoMvc from "./components/vue3demo/TodoMvc.vue";
 
 const state = reactive({
   entity: null,
-  value: true,
-  options: [
-    {name: 'Radar', isChecked: true},
+  value: false})
+
+const options = reactive([
+   {name: 'Radar', isChecked: true},
     {name: 'Wall', isChecked: true},
     {name: 'Circle', isChecked: true},
     {name: 'Ball', isChecked: true},
     {name: 'Cone', isChecked: true},
     {name: 'Fly', isChecked: true},
-    {name: 'Road', isChecked: true}
-  ]})
+    {name: 'Road', isChecked: true},
+    {name: 'Rain', isChecked: false},
+    {name: 'Snow', isChecked: false},
+])
 
 onMounted(() => {
   // 初始化三维场景
@@ -37,36 +40,43 @@ function switchChange(value) {
 
 function change(isChecked, name) {
   if(!state.entity) return;
-  const index = state.options.findIndex((i) => i.name === name);
+  const index = options.findIndex((i) => i.name === name);
   switch (name) {
     case 'Radar':
-      !isChecked ? state.entity.city.initEffectRadar() : state.entity.city.radar.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectRadar() : state.entity.city.radar.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Wall":
-      !isChecked ? state.entity.city.initEffectWall() : state.entity.city.wall.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectWall() : state.entity.city.wall.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Circle":
-      !isChecked ? state.entity.city.initEffectCircle() : state.entity.city.circle.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectCircle() : state.entity.city.circle.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Ball":
-      debugger;
-      !isChecked ? state.entity.city.initEffectBall() : state.entity.city.ball.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectBall() : state.entity.city.ball.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Cone":
-      !isChecked ? state.entity.city.initEffectCone() : state.entity.city.cone.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectCone() : state.entity.city.cone.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Fly":
-      !isChecked ? state.entity.city.initEffectFly() : state.entity.city.fly.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectFly() : state.entity.city.fly.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Road":
-      !isChecked ? state.entity.city.initEffectRoad() : state.entity.city.road.remove();
-      state.options[index].isChecked = !state.options[index].isChecked;
+      options[index].isChecked ? state.entity.city.initEffectRoad() : state.entity.city.road.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
+      break;
+    case "Rain":
+      options[index].isChecked ? state.entity.city.initEffectRain() : state.entity.city.rain.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
+      break;
+    case "Snow":
+      options[index].isChecked ? state.entity.city.initEffectSnow() : state.entity.city.snow.remove();
+      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     default:
       break;
@@ -81,8 +91,8 @@ function change(isChecked, name) {
     <canvas id="webgl">浏览器不支持canvas，请切换浏览器重试</canvas>
     <div id="play">
       <div class="option-warp">
-        <div class="form-group form-check option" v-for="(item,index) in state.options" key="index">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" checked="item.isChecked" @change="change(item.isChecked, item.name)">
+        <div class="form-group form-check option" v-for="(item,index) in options" key="index">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="item.isChecked" @change="change(item.isChecked, item.name)">
           <label class="form-check-label" for="exampleCheck1">{{item.name}}</label>
         </div>
       </div>
