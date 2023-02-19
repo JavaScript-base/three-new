@@ -5,12 +5,15 @@ export class Radar {
     constructor (scene, time) {
         this.scene = scene;
         this.time = time;
+        this.mesh = null;
         this.init();
     }
 
     init() {
         const radius = 50;
         const geometry = new Three.PlaneGeometry(radius * 2, radius * 2);
+
+        console.log(geometry);
 
         const meterial = new Three.ShaderMaterial({
             uniforms: {
@@ -64,10 +67,19 @@ export class Radar {
                 }
             `
         })
-        const mesh = new Three.Mesh(geometry, meterial);
-        mesh.position.set(300, 0, 0);
-        mesh.rotateX(-Math.PI/2)
-        mesh.position.setY(20)
-        this.scene.add(mesh);
+        this.mesh = new Three.Mesh(geometry, meterial);
+        this.mesh.position.set(300, 0, 0);
+        this.mesh.rotateX(-Math.PI/2)
+        this.mesh.position.setY(20)
+        this.scene.add(this.mesh);
+    }
+
+    // 清除mesh
+    remove() {
+        console.log(this.mesh);
+        if(this.mesh && this.scene) {
+            this.scene.remove(this.mesh);
+        }
+        return;
     }
 }

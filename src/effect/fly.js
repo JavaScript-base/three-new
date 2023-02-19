@@ -5,7 +5,7 @@ export class Fly{
     constructor(scene, time) {
         this.scene = scene;
         this.time = time;
-
+        this.mesh = null;
         this.createFly({
             source: {
                 x: 300, 
@@ -98,8 +98,14 @@ export class Fly{
             transparent: true
         })
 
-        const point = new Three.Points(geometry, meterial);
+        this.mesh = new Three.Points(geometry, meterial);
 
-        this.scene.add(point);
+        this.scene.add(this.mesh);
     }
+
+    remove() {
+        if(this.scene && this.mesh) {
+            this.scene.remove(this.mesh);
+        }
+      }
 }

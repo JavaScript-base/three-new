@@ -18,6 +18,10 @@ export class Wall {
             },
             speed: 1.0
         }
-        new Cylinder(this.sence, this.time).createCylinder(this.config);
+        this.wall = new Cylinder(this.sence, this.time);
+        this.wall.createCylinder(this.config)
+    }
+    remove() {
+        this.wall.remove();
     }
 }

@@ -4,6 +4,7 @@ export class Cylinder {
     constructor(sence, time) {
         this.time = time;
         this.sence  = sence;
+        this.mesh = null;
     }
     createCylinder(config) {
         const geometry = new Three.CylinderGeometry(
@@ -58,10 +59,16 @@ export class Cylinder {
             `
         })
 
-        const mesh = new Three.Mesh(geometry, meterial);
+        this.mesh = new Three.Mesh(geometry, meterial);
 
-        mesh.position.copy(config.position);
+        this.mesh.position.copy(config.position);
 
-        this.sence.add(mesh);
+        this.sence.add(this.mesh);
+    }
+
+    remove() {
+        if(this.sence && this.mesh) {
+            this.sence.remove(this.mesh);
+        }
     }
 }

@@ -17,6 +17,10 @@ export class Circle {
             speed: 2.0,
         }
 
-        new Cylinder(scene, time).createCylinder(this.config);
+        this.circle = new Cylinder(scene, time)
+        this.circle.createCylinder(this.config);
+    }
+    remove() {
+        this.circle.remove()
     }
 }

@@ -5,6 +5,7 @@ export class Ball {
     constructor(sence, time) {
         this.time = time;
         this.sence  = sence;
+        this.mesh = null;
         this.createCylinder({
             color: color.ball,
             opacity: 0.6,
@@ -15,7 +16,7 @@ export class Ball {
                 y: 0,
                 z: -200
             }
-        })
+        });
     }
     createCylinder(config) {
         const geometry = new Three.SphereGeometry(
@@ -70,10 +71,17 @@ export class Ball {
             `
         })
 
-        const mesh = new Three.Mesh(geometry, meterial);
+        this.mesh = new Three.Mesh(geometry, meterial);
 
-        mesh.position.copy(config.position);
+        this.mesh.position.copy(config.position);
 
-        this.sence.add(mesh);
+        this.sence.add(this.mesh);
+    }
+
+    remove() {
+        if(this.sence && this.mesh) {
+            debugger;
+            this.sence.remove(this.mesh);
+        }
     }
 }

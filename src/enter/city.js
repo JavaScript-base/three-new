@@ -17,6 +17,18 @@ export class City {
         this.camera = camera;
         this.tweenRotation = null;
         this.tweenPosition = null;
+        this.background = null;
+        this.radar = null;
+        this.wall = null;
+        this.ball = null;
+        this.circle = null;
+        this.cone = null;
+        this.fly = null;
+        this.road = null;
+
+        this.beattime = {
+            value: []
+        };
         this.height = {
             value: 5
         };
@@ -30,6 +42,8 @@ export class City {
             value: 0
         }
         this.loadCity();
+        this.meshList = [];
+        this.lineList = [];
     }
 
     loadCity() {
@@ -41,48 +55,62 @@ export class City {
                     new SurroundLine(child, this.scene, this.height, this.time);
                 }
             })
-            // this.scene.add(object)
-            this.initEffect()
+            this.initEffectBackground('/src/assets/black-bg.png')
+            this.initEffectRadar()
+            this.initEffectWall()
+            this.initEffectBall()
+            this.initEffectCircle()
+            this.initEffectCone()
+            this.initEffectFly()
+            this.initEffectRoad()
+            this.addClick();
         })
     }
 
+
+
     // 模型上的效果
-    initEffect() {
-        new Background(this.scene);
-
-        new Radar(this.scene, this.time);
-
-        new Wall(this.scene, this.time);
-
-        new Ball(this.scene, this.time);
-
-        new Circle(this.scene, this.time);
-
-        new Cone(this.scene, this.top, this.height);
-
-        new Fly(this.scene, this.time);
-
-        new Road(this.scene, this.time);
-
-        // 添加点击选择
-        this.addClick()
+    initEffectBackground(url) {
+        this.background = new Background(this.scene, url);
+    }
+    initEffectRadar() {
+        this.radar = new Radar(this.scene, this.time);
+    }
+    initEffectWall() {
+        this.wall = new Wall(this.scene, this.time);
+    }
+    initEffectBall() {
+        this.ball = new Ball(this.scene, this.time);
+    }
+    initEffectCircle() {
+        this.circle = new Circle(this.scene, this.time);
+    }
+    initEffectCone() {
+        this.cone = new Cone(this.scene, this.top, this.height);
+    }
+    initEffectFly() {
+        this.fly = new Fly(this.scene, this.time);
+    }
+    initEffectRoad() {
+        this.road = new Road(this.scene, this.time);
     }
 
     addClick() {
         // 解决点击事件和拖拽的冲突
+        const canvas = document.getElementById("webgl")
         let flag = true;
-        document.onmousedown = () => {
+        canvas.onmousedown = () => {
             flag = true;
             document.onmousemove = () => {
                 flag = false;
             }
         }
 
-        document.onmouseup = (event) => {
+        canvas.onmouseup = (event) => {
             if(flag) {
                 this.clickEvent(event)
             }
-            document.onmousemove = null;
+            canvas.onmousemove = null;
         }
 
     }
@@ -134,6 +162,29 @@ export class City {
             this.tweenRotation.update();
         }
         this.height.value += 0.4;
+
+        // let STEP = 50;
+        // const averageFrequencyData = [];
+        // for (let i = 0; i< frequencyData.length; i += STEP) {
+        //     let sum = 0;
+        //     for(let j = i; j < i + STEP; j++) {
+        //         sum += frequencyData[j];
+        //     }
+        //     averageFrequencyData.push(sum / STEP);
+        // }
+       
+        // this.beattime.value = averageFrequencyData;
+
+    //    if(this.meshList.length > 0) {
+    //         this.meshList.forEach((item, index) => {
+    //             item.position.y = Math.floor(averageFrequencyData[index]);
+    //             item.position.y = Math.floor(averageFrequencyData[index]);
+    //         })
+    //         this.lineList.forEach((item, index) => {
+    //             item.position.y = Math.floor(averageFrequencyData[index]);
+    //             item.position.y = Math.floor(averageFrequencyData[index]);
+    //         })
+    //    }
 
         this.time.value += delta;
         if(this.top.value > 15 || this.top.value < 0) {

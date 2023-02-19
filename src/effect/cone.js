@@ -4,9 +4,9 @@ import { color } from '../config'
 export class Cone{
   constructor(scene, top, height) {
     this.scene = scene;
+    this.mesh = null;
     this.top = top;
     this.height = height;
-
     this.createCone({
       color: color.cone,
       height: 60,
@@ -61,10 +61,14 @@ export class Cone{
       depthTest: false, // 被建筑物遮挡的问题
     })
 
-    const mesh = new Three.Mesh(geometry, material);
-    mesh.position.copy(options.position);
-    mesh.rotateZ(Math.PI);
-
-    this.scene.add(mesh);
+    this.mesh = new Three.Mesh(geometry, material);
+    this.mesh.position.copy(options.position);
+    this.mesh.rotateZ(Math.PI);
+    this.scene.add(this.mesh);
+  }
+  remove() {
+    if(this.scene && this.mesh) {
+      this.scene.remove(this.mesh);
+  }
   }
 }

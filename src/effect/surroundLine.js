@@ -7,6 +7,8 @@ export class SurroundLine {
         this.scene = scene;
         this.height = height;
         this.time = time;
+        this.mesh = child;
+        this.line = null;
         this.createMesh();
         this.createLine();
     }
@@ -83,6 +85,7 @@ export class SurroundLine {
         line.scale.copy(this.child.scale);
         line.rotation.copy(this.child.rotation);
         line.position.copy(this.child.position);
+        // this.line = line;
         this.scene.add(line);
     }
 
@@ -111,7 +114,7 @@ export class SurroundLine {
                 varying vec3 v_position;
                 void main() {
                     v_position = position;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(vec2(position), position.z, 1.0);
                 }
             `,
             fragmentShader: `
@@ -129,7 +132,6 @@ export class SurroundLine {
                         float f_index = (u_height - v_position.z) / 4.0;
                         base_color = mix(u_up_color, base_color, abs(f_index - 1.0));
                     }
-
                     gl_FragColor = vec4(base_color, 1.0);
                 }
              `,
@@ -138,12 +140,11 @@ export class SurroundLine {
              polygonOffsetUnits: -10
         })
         const mesh = new Three.Mesh(this.child.geometry, meterial);
+
         mesh.position.copy(this.child.position);
         mesh.rotation.copy(this.child.rotation);
         mesh.scale.copy(this.child.scale);
-        // mesh.position.x += 1;
-        // mesh.position.y += 1;
-        // mesh.position.z += 1;
+        // this.mesh = mesh;
         this.scene.add(mesh);
     }
 }
