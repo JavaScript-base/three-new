@@ -42,7 +42,7 @@ onMounted(async() => {
 })
 
 function switchChange(value) {
-    state.entity.city.background.init(value ? '/src/assets/white-bg.png': '/src/assets/black-bg.png');
+    state.entity.city.background.init(value ? '../public/assets/white-bg.png': '/assets/black-bg.png');
 }
 
 function change(isChecked, name) {

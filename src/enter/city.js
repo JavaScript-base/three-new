@@ -54,7 +54,7 @@ export class City {
     async loadCity() {
         // 加载模型并且渲染到画布
         return new Promise(((resolve, reject) => {
-            loadFBX('/src/assets/beijing.fbx').then((object) => {
+            loadFBX('/assets/beijing.fbx').then((object) => {
                 this.loaded = true;
                 object.traverse((child) => {
                     if(child.isMesh) {
@@ -62,7 +62,7 @@ export class City {
                         new SurroundLine(child, this.scene, this.height, this.time);
                     }
                 })
-                this.initEffectBackground('/src/assets/black-bg.png')
+                this.initEffectBackground('/assets/black-bg.png')
                 this.initEffectRadar()
                 this.initEffectWall()
                 this.initEffectBall()
