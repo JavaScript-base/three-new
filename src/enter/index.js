@@ -8,8 +8,9 @@ export class Entity {
         this.audioCtx = new AudioContext();
         this.source = null;
         this.analyser = null;
+        this.loaded = false;
         this.city = null;
-        this.initCity();
+        // this.initCity();
     }
 
     // 初始化音乐
@@ -37,7 +38,7 @@ export class Entity {
     }
 
     //初始化模型
-    initCity = () => {
+    initCity = async () => {
         const canvas = document.getElementById("webgl");
     
         const scene = new Three.Scene();
@@ -84,8 +85,9 @@ export class Entity {
     
         this.city = new City(scene, camera);
     
+        this.loaded = await this.city.loadCity();
+
         const clock = new Three.Clock();
-    
         const start = () => {
             // const frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
             // this.analyser.getByteFrequencyData(frequencyData);
@@ -98,15 +100,21 @@ export class Entity {
             renderer.render(scene, camera);
             requestAnimationFrame(start);
         }
-    
-        start()
-    
+        
+        if(this.loaded) start();
     
         window.addEventListener("resize", () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix()
             renderer.setSize(window.innerWidth, window.innerHeight)
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        })
+
+        return new Promise((resolve, reject) => {
+            if(this.loaded === true) {
+                resolve(true)
+            }
+            reject(false)
         })
     }    
 }

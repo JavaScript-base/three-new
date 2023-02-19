@@ -29,6 +29,7 @@ export class City {
         this.road = null;
         this.rain = null;
         this.snow = null;
+        this.loaded = false;
 
         this.beattime = {
             value: []
@@ -45,32 +46,36 @@ export class City {
         this.top = {
             value: 0
         }
-        this.loadCity();
+        // this.loadCity();
         this.meshList = [];
         this.lineList = [];
     }
 
-    loadCity() {
+    async loadCity() {
         // 加载模型并且渲染到画布
-        loadFBX('/src/assets/beijing.fbx').then((object) => {
-            object.traverse((child) => {
-                if(child.isMesh) {
-                    // const meterial1= new Three.MeshLambertMaterial({color: '#1b3045'})
-                    new SurroundLine(child, this.scene, this.height, this.time);
-                }
-            })
-            this.initEffectBackground('/src/assets/black-bg.png')
-            this.initEffectRadar()
-            this.initEffectWall()
-            this.initEffectBall()
-            this.initEffectCircle()
-            this.initEffectCone()
-            this.initEffectFly()
-            this.initEffectRoad()
-            // this.initEffectRain()
-            // this.initEffectSnow()
-            this.addClick();
-        })
+        return new Promise(((resolve, reject) => {
+            loadFBX('/src/assets/beijing.fbx').then((object) => {
+                this.loaded = true;
+                object.traverse((child) => {
+                    if(child.isMesh) {
+                        // const meterial1= new Three.MeshLambertMaterial({color: '#1b3045'})
+                        new SurroundLine(child, this.scene, this.height, this.time);
+                    }
+                })
+                this.initEffectBackground('/src/assets/black-bg.png')
+                this.initEffectRadar()
+                this.initEffectWall()
+                this.initEffectBall()
+                this.initEffectCircle()
+                this.initEffectCone()
+                this.initEffectFly()
+                this.initEffectRoad()
+                // this.initEffectRain()
+                // this.initEffectSnow()
+                this.addClick();
+                resolve(true);
+            }).catch((error) => reject(error))
+        }))
     }
 
     // 模型上的效果

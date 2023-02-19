@@ -19,9 +19,16 @@ const options = reactive([
     {name: 'Snow', isChecked: false},
 ])
 
-onMounted(() => {
+let loaded = ref(false);
+
+onMounted(async() => {
   // 初始化三维场景
   state.entity = new Entity();
+
+  loaded.value = await state.entity.initCity();
+
+  console.log(loaded.value);
+
   // const play = document.getElementById("play");
 
     // function triggerHandler() {
@@ -44,39 +51,30 @@ function change(isChecked, name) {
   switch (name) {
     case 'Radar':
       options[index].isChecked ? state.entity.city.initEffectRadar() : state.entity.city.radar.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Wall":
       options[index].isChecked ? state.entity.city.initEffectWall() : state.entity.city.wall.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Circle":
       options[index].isChecked ? state.entity.city.initEffectCircle() : state.entity.city.circle.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Ball":
       options[index].isChecked ? state.entity.city.initEffectBall() : state.entity.city.ball.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Cone":
       options[index].isChecked ? state.entity.city.initEffectCone() : state.entity.city.cone.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Fly":
       options[index].isChecked ? state.entity.city.initEffectFly() : state.entity.city.fly.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Road":
       options[index].isChecked ? state.entity.city.initEffectRoad() : state.entity.city.road.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Rain":
       options[index].isChecked ? state.entity.city.initEffectRain() : state.entity.city.rain.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     case "Snow":
       options[index].isChecked ? state.entity.city.initEffectSnow() : state.entity.city.snow.remove();
-      // state.options[index].isChecked = !state.options[index].isChecked;
       break;
     default:
       break;
@@ -89,10 +87,10 @@ function change(isChecked, name) {
   <!-- <TodoMvc /> -->
   <div>
     <canvas id="webgl">浏览器不支持canvas，请切换浏览器重试</canvas>
-    <div id="play">
+    <div id="play" v-if="loaded">
       <div class="option-warp">
         <div class="form-group form-check option" v-for="(item,index) in options" key="index">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="item.isChecked" @change="change(item.isChecked, item.name)">
+          <input style="{cursor: point}" type="checkbox" class="form-check-input" id="exampleCheck1" v-model="item.isChecked" @change="change(item.isChecked, item.name)">
           <label class="form-check-label" for="exampleCheck1">{{item.name}}</label>
         </div>
       </div>
@@ -103,6 +101,16 @@ function change(isChecked, name) {
         inactive-text="黑夜">
       </el-switch>
     </div>
+    <div v-else class="loading-wrap">
+      <div class="text">加载资源..</div>
+      <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -112,16 +120,16 @@ function change(isChecked, name) {
     z-index: 10;
   }
   #play{
-    background: #dfdfdf;
+    background: rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 0px 0 #333;
     position: absolute;
     width: 100%;
     top: 0;
     height: 40px;
     z-index: 100;
     padding: 10px;
-    cursor: pointer;
     display: flex;
-    color: #adadad;
+    color: #ddd;
     align-items: center;
     justify-content: space-between;
   }
@@ -131,4 +139,84 @@ function change(isChecked, name) {
   .option{
     margin-right: 10px;
   }
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(
+      circle farthest-corner at center center,
+      #666,
+      #b5bdca
+    );
+  }
+
+.loading-wrap .text {
+  font-size: 18px;
+  color: white;
+}
+
+.loading {
+  width: 150px;
+  height: 15px;
+}
+.loading span {
+  display: inline-block;
+  width: 15px;
+  height: 100%;
+  margin-right: 5px;
+  background: lightgreen;
+  transform-origin: right bottom;
+  animation: load 1s ease infinite;
+  -webkit-transform-origin: right bottom;
+  -webkit-animation: load 1s ease infinite;
+}
+.loading span:last-child {
+  margin-right: 0px;
+}
+@keyframes load {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(90deg) scale(0.3);
+  }
+}
+@-webkit-keyframes load {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(90deg) scale(0.3);
+  }
+}
+.loading span:nth-child(1) {
+  animation-delay: 0.13s;
+  -webkit-animation-delay: 0.13s;
+}
+.loading span:nth-child(2) {
+  -animation-delay: 0.26s;
+  -webkit-animation-delay: 0.26s;
+}
+.loading span:nth-child(3) {
+  animation-delay: 0.39s;
+  -webkit-animation-delay: 0.39s;
+}
+.loading span:nth-child(4) {
+  animation-delay: 0.52s;
+  -webkit-animation-delay: 0.52s;
+}
+.loading span:nth-child(5) {
+  animation-delay: 0.65s;
+  -webkit-animation-delay: 0.65s;
+}
 </style>
