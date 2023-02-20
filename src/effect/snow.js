@@ -23,7 +23,7 @@ export class Snow{
         position.speedY = Math.random() + 4;
         position.speedZ = Math.random() - 0.5;
       },
-      url: '/assets/snow.png',
+      url: '/three-new/assets/snow.png',
     })
     this.scene = scene;
   }

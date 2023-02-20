@@ -54,7 +54,7 @@ export class City {
     async loadCity() {
         // 加载模型并且渲染到画布
         return new Promise(((resolve, reject) => {
-            loadFBX('/assets/beijing.fbx').then((object) => {
+            loadFBX('/three-new/assets/beijing.fbx').then((object) => {
                 this.loaded = true;
                 object.traverse((child) => {
                     if(child.isMesh) {
