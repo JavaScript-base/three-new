@@ -20,7 +20,7 @@ export class Rain{
       setPosition(position) {
         position.speedY = 20
       },
-      url: '/assets/rain.png',
+      url: '/three-new/assets/rain.png',
     })
     this.scene = scene;
   }
