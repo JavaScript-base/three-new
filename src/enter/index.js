@@ -58,7 +58,7 @@ export class Entity {
         orbitControls.enableDamping = true;
         orbitControls.enableZoom = true;
         orbitControls.minDistance = 100;
-        orbitControls.maxDistance = 2000;
+        orbitControls.maxDistance = 5000;
     
         // 添加环境光
         const ambientLight = new Three.AmbientLight(0xadadad)

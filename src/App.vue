@@ -102,13 +102,15 @@ function change(isChecked, name) {
       </el-switch>
     </div>
     <div v-else class="loading-wrap">
-      <div class="text">加载资源..</div>
-      <div class="loading">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+      <div>
+        <div class="text">加载资源..</div>
+        <div class="loading">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -123,18 +125,20 @@ function change(isChecked, name) {
     background: rgba(0,0,0,0.2);
     box-shadow: 0px 1px 0px 0 #333;
     position: absolute;
-    width: 100%;
+    /* width: 100%; */
     top: 0;
     height: 40px;
     z-index: 100;
-    padding: 10px;
+    /* padding: 10px; */
     display: flex;
     color: #ddd;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
   #play .option-warp{
     display: flex;
+    flex-wrap: wrap;
   }
   .option{
     margin-right: 10px;
@@ -142,8 +146,10 @@ function change(isChecked, name) {
 
 .loading-wrap {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 99;
     display: flex;
     flex-direction: column;
